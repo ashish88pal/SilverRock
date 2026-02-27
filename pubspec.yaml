@@ -1,0 +1,57 @@
+name: trading_demo_app
+description: A Flutter trading demo app with real-time price simulation using Clean Architecture and BLoC.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.10.8 <4.0.0'
+  flutter: '>=3.10.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management
+  flutter_bloc: ^9.1.1
+  bloc: ^9.2.0
+  equatable: ^2.0.8
+
+  # Dependency Injection
+  get_it: ^9.2.1
+  injectable: ^2.7.1
+
+  # Charts
+  fl_chart: ^1.1.1
+
+  # Utils
+  intl: ^0.18.1
+  uuid: ^4.1.0
+  svg_flutter: 
+  animated_bottom_navigation_bar: ^1.4.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  injectable_generator: ^2.4.1
+  build_runner: ^2.11.1
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  fonts:
+    - family: CustomIcons
+      fonts:
+        - asset: assets/fonts/CustomIcons.ttf
+  # fonts:
+  #   - family: Inter
+  #     fonts:
+  #       - asset: assets/fonts/Inter-Regular.ttf
+  #       - asset: assets/fonts/Inter-Medium.ttf
+  #         weight: 500
+  #       - asset: assets/fonts/Inter-SemiBold.ttf
+  #         weight: 600
+  #       - asset: assets/fonts/Inter-Bold.ttf
+  #         weight: 700
+  assets:
+    - assets/
