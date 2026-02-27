@@ -29,10 +29,10 @@ class MarketView extends StatefulWidget {
   const MarketView({super.key});
 
   @override
-  State<MarketView> createState() => MarketViewState();
+  State<MarketView> createState() => _MarketViewState();
 }
 
-class MarketViewState extends State<MarketView>
+class _MarketViewState extends State<MarketView>
     with SingleTickerProviderStateMixin {
   int _selectedCategoryIndex = 0;
   late final TabController _subTabController;
@@ -77,7 +77,7 @@ class MarketViewState extends State<MarketView>
                     MarketSearchQueryChanged(q),
                   ),
                 ),
-                const Expanded(child: _MarketAssetList()),
+                const Expanded(child: MarketAssetList()),
               ],
             ),
           ),
@@ -90,8 +90,8 @@ class MarketViewState extends State<MarketView>
 // Live asset list — rebuilds on every price tick so each tile receives
 // fresh data. The ListView.builder call itself is O(1); GPU repaints are
 // isolated per tile by RepaintBoundary inside MarketAssetTile.
-class _MarketAssetList extends StatelessWidget {
-  const _MarketAssetList();
+class MarketAssetList extends StatelessWidget {
+  const MarketAssetList({super.key});
 
   @override
   Widget build(BuildContext context) {

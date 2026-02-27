@@ -5,7 +5,6 @@ import '../../features/market/data/repositories/market_repository_impl.dart';
 import '../../features/market/domain/datasources/market_data_source.dart';
 import '../../features/market/domain/repositories/market_repository.dart';
 import '../../features/market/domain/usecases/market_usecases.dart';
-import '../../features/market/presentation/bloc/asset_detail_bloc.dart';
 import '../../features/market/presentation/bloc/market_bloc.dart';
 
 // Application-wide service locator.
@@ -41,12 +40,6 @@ Future<void> initDependencies() async {
     () => MarketBloc(
       getMarketAssets: sl<GetMarketAssetsUseCase>(),
       watchMarketAssets: sl<WatchMarketAssetsUseCase>(),
-    ),
-  );
-  sl.registerFactory(
-    () => AssetDetailBloc(
-      getAssetById: sl<GetAssetByIdUseCase>(),
-      watchAsset: sl<WatchSingleAssetUseCase>(),
     ),
   );
 }

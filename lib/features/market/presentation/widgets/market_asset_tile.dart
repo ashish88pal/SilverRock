@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:svg_flutter/svg_flutter.dart';
 import 'package:trading_demo_app/core/constants/app_constants.dart';
+import 'package:trading_demo_app/features/market/presentation/bloc/market_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/price_formatter.dart';
-import '../../../../shared/widgets/asset_logo.dart';
+import '../../../../shared/widgets/widgets.dart';
 import '../../domain/entities/market_asset.dart';
-import 'sparkline_chart.dart';
 
 // One row in the market list. Contains logo, symbol, sparkline, and
 // sell/buy price boxes.
@@ -94,20 +95,42 @@ class MarketAssetTile extends StatelessWidget {
                             color: changeColor,
                           ),
                           const SizedBox(width: 8),
-                          const ChartButton(),
+                          ChartButton(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return BlocProvider.value(
+                                    value: context
+                                        .read<
+                                          MarketBloc
+                                        >(), // pass existing bloc
+                                    child: AlertDialog(
+                                      content: SizedBox(
+                                        width: double.maxFinite,
+                                        child: SparklineDialogContent(
+                                          assetId: asset.id,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
                         ],
                       ),
                     ],
                   ),
                   const Spacer(),
                   // Sparkline
-                  SizedBox(
-                    width: 70,
-                    child: SparklineChart(
-                      data: asset.sparklineData,
-                      isGain: asset.isGain,
-                    ),
-                  ),
+                  // SizedBox(
+                  //   // width: 70,
+                  //   child: SparklineChart(
+                  //     data: asset.sparklineData,
+                  //     isGain: asset.isGain,
+                  //   ),
+                  // ),
                   const SizedBox(width: 10),
                   // Sell / Buy boxes
                   TradingBox(
@@ -162,21 +185,24 @@ class ChangeValueText extends StatelessWidget {
 
 // Small "Chart" button with a graph icon.
 class ChartButton extends StatelessWidget {
-  const ChartButton({super.key});
+  final VoidCallback onTap;
+  const ChartButton({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
       padding: const EdgeInsets.all(5),
-      onTap: () {},
+      onTap: onTap,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           SvgPicture.asset('assets/graph.svg', width: 12, height: 12),
           const SizedBox(width: 3),
-          const Text(
+          Text(
             'Chart',
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+            style: AppTextStyles.bodySmall.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
       ),
@@ -206,14 +232,14 @@ class TradingBox extends StatelessWidget {
     return OutlinedButton(
       onTap: onTap ?? () {},
       child: SizedBox(
-        width: 74,
+        width: 65,
         height: 55,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               label,
-              style: TextStyle(
+              style: AppTextStyles.bodySmall.copyWith(
                 fontSize: 11,
                 fontWeight: FontWeight.w500,
                 color: labelColor,
@@ -225,7 +251,7 @@ class TradingBox extends StatelessWidget {
               duration: const Duration(milliseconds: 300),
               builder: (_, v, _) => Text(
                 v.toStringAsFixed(2),
-                style: TextStyle(
+                style: AppTextStyles.bodySmall.copyWith(
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
                   color: labelColor,

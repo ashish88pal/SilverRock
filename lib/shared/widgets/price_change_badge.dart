@@ -42,7 +42,11 @@ class PriceChangeBadge extends StatelessWidget {
       decoration: decoration,
       child: Padding(
         padding:
-            padding ?? const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            padding ??
+            const EdgeInsets.symmetric(
+              horizontal: AppConstants.smallPadding,
+              vertical: AppConstants.smallPadding / 2,
+            ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

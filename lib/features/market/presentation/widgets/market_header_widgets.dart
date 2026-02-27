@@ -78,9 +78,9 @@ class MarketTopBar extends StatelessWidget {
             child: const Icon(Icons.menu, color: Colors.black, size: 24),
           ),
           const SizedBox(width: 12),
-          const Text(
+          Text(
             'Market Watch',
-            style: TextStyle(
+            style: AppTextStyles.titleMedium.copyWith(
               fontSize: 20,
               fontWeight: FontWeight.w700,
               color: Colors.black,
@@ -89,29 +89,25 @@ class MarketTopBar extends StatelessWidget {
           const Spacer(),
           // Wallet balance chip with gradient border
           Container(
-            height: 66.0,
+            // height: 66.0,
             decoration: kBalanceOuterDecoration,
             child: Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.all(AppConstants.smallPadding / 2),
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 2,
-                ),
+                padding: EdgeInsets.all(AppConstants.smallPadding),
                 decoration: kBalanceInnerDecoration,
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SvgPicture.asset(
                       'assets/wallet.svg',
-                      width: 25,
-                      height: 25,
+                      width: 20,
+                      height: 20,
                     ),
                     const SizedBox(width: 6),
                     Text(
                       kInitialCashBalance.toString(),
-                      style: const TextStyle(
-                        fontSize: 20,
+                      style: AppTextStyles.bodyMedium.copyWith(
                         fontWeight: FontWeight.bold,
                         color: AppColors.primary,
                       ),
@@ -139,11 +135,11 @@ class MarketTopBar extends StatelessWidget {
                 top: -2,
                 child: DecoratedBox(
                   decoration: kNotifBadgeDecoration,
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsets.all(3),
                     child: Text(
                       '10',
-                      style: TextStyle(
+                      style: AppTextStyles.bodySmall.copyWith(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
@@ -190,7 +186,7 @@ class MarketCategoryTabsState extends State<MarketCategoryTabs> {
         final isSelected = entry.key == widget.controller.index;
         final tab = entry.value;
         return Tab(
-          height: 75,
+          height: 70,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -202,8 +198,11 @@ class MarketCategoryTabsState extends State<MarketCategoryTabs> {
               ),
               Text(
                 tab.label,
-                style: TextStyle(
-                  fontSize: 12,
+                style: AppTextStyles.bodySmall.copyWith(
+                  fontSize: 9,
+                  color: isSelected
+                      ? AppColors.textPrimary
+                      : AppColors.textSecondary,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                   letterSpacing: 0.5,
                 ),
@@ -253,8 +252,8 @@ class MarketSubTabsState extends State<MarketSubTabs> {
           child: isActive
               ? Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 4,
-                    vertical: 8,
+                    horizontal: AppConstants.smallPadding,
+                    vertical: AppConstants.smallPadding / 2,
                   ),
                   decoration: const BoxDecoration(
                     gradient: AppColors.tabGradient,
@@ -264,31 +263,22 @@ class MarketSubTabsState extends State<MarketSubTabs> {
                   ),
                   child: Text(
                     entry.value,
-                    style: const TextStyle(
-                      fontSize: 11,
+                    style: AppTextStyles.bodySmall.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 0.3,
                     ),
                   ),
                 )
-              : Text(
-                  entry.value,
-                  style: const TextStyle(
-                    fontSize: 11,
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 0.3,
-                  ),
-                ),
+              : Text(entry.value, style: AppTextStyles.bodySmall),
         );
       }).toList(),
       indicatorColor: Colors.transparent,
       indicatorWeight: 3,
       indicatorSize: TabBarIndicatorSize.tab,
       dividerColor: AppColors.divider,
-      isScrollable: false,
-      tabAlignment: TabAlignment.fill,
+      isScrollable: true,
+      tabAlignment: TabAlignment.center,
       padding: EdgeInsets.zero,
     );
   }

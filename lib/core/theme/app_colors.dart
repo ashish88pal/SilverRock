@@ -36,7 +36,7 @@ class AppColors {
   // Trade buttons
   static const Color buyColor = CupertinoColors.destructiveRed;
   static const Color buyBackground = Color(0xFFFFEBEE);
-  static const Color sellColor = Color(0xFF1565C0);
+  static const Color sellColor = CupertinoColors.activeBlue;
   static const Color sellBackground = Color(0xFFE3F2FD);
 
   // Charts

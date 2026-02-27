@@ -11,8 +11,6 @@ flutter pub get
 flutter run
 ```
 
-Tested with Flutter 3.27+ and Dart 3.6+.
-
 ---
 
 ## Project structure
@@ -87,23 +85,18 @@ Presentation  →  Domain  ←  Data
 
 ## Dummy Trading Logic (Frontend Simulation)
 
-This application simulates real-time trading price fluctuations using pure frontend logic without any external APIs.
-
+This application simulates real-time trading price fluctuations using pure frontend logic without any external APIs. 
+newPrice = oldPrice ± (oldPrice * changePercent)
+default duration 500ms
 The goal was to mimic real market behavior while keeping the logic clean, scalable, and fully managed via BLoC
 
 ## Performance
 
-**60 fps techniques used:**
+### 🏠 60FPS in emulator
+![Emulator](screenshots/emulator.png)
 
-| Technique | File |
-|-----------|------|
-| `RepaintBoundary` on every tile | `market_asset_tile.dart`, `watchlist_page.dart` |
-| Pre-built `const` / file-level `final` `BoxDecoration` objects | `ui_constants.dart`, `price_change_badge.dart`, `sparkline_chart.dart` |
-| Tick counter in `MarketLoaded.props` — O(1) change detection instead of O(n) list comparison | `market_state.dart` |
-| `fl_chart` animations disabled (`duration: Duration.zero`) | `sparkline_chart.dart`, `asset_detail_widgets.dart` |
-| `addAutomaticKeepAlives: false` on `ListView.builder` | `market_page.dart` |
-| `BlocSelector` rebuilds only the list widget, not the whole page | `market_page.dart` |
-| `animate: false` on `AnimatedPriceText` in high-frequency tiles | `watchlist_page.dart` |
+### 📊 120FPS in real device
+![Real Device](screenshots/real_device.png)
 
 ---
 

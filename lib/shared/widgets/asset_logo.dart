@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_text_styles.dart';
 
 // Circular emoji avatar. Uses DecoratedBox + SizedBox (not Container) to
 // skip the extra layout pass Container performs when child constraints are
@@ -20,14 +21,20 @@ class AssetLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        color:  backgroundColor ?? AppColors.surfaceLight,
-        shape:  BoxShape.circle,
-        border: const Border.fromBorderSide(BorderSide(color: AppColors.cardBorder)),
+        color: backgroundColor ?? AppColors.surfaceLight,
+        shape: BoxShape.circle,
+        border: const Border.fromBorderSide(
+          BorderSide(color: AppColors.cardBorder),
+        ),
       ),
       child: SizedBox(
-        width: size, height: size,
+        width: size,
+        height: size,
         child: Center(
-          child: Text(emoji, style: TextStyle(fontSize: size * 0.45)),
+          child: Text(
+            emoji,
+            style: AppTextStyles.bodySmall.copyWith(fontSize: size * 0.45),
+          ),
         ),
       ),
     );

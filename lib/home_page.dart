@@ -80,7 +80,7 @@ class PlaceholderPage extends StatelessWidget {
         backgroundColor: AppColors.primary,
         title: Text(
           label,
-          style: const TextStyle(
+          style: AppTextStyles.bodyMedium.copyWith(
             color: Colors.white,
             fontWeight: FontWeight.w700,
           ),

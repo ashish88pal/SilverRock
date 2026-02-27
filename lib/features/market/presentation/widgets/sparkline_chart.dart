@@ -1,6 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trading_demo_app/features/market/presentation/bloc/market_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../bloc/market_state.dart';
 
 // Pre-built gradients — created once at startup. SparklineChart rebuilds on
 // every 500 ms tick for each visible tile; avoiding new LinearGradient objects
@@ -29,8 +32,8 @@ class SparklineChart extends StatelessWidget {
     super.key,
     required this.data,
     required this.isGain,
-    this.height = 50,
-    this.width  = 80,
+    required this.height,
+    required this.width,
   });
 
   final List<double> data;
@@ -42,7 +45,7 @@ class SparklineChart extends StatelessWidget {
   Widget build(BuildContext context) {
     if (data.isEmpty) return SizedBox(height: height, width: width);
 
-    final color    = isGain ? AppColors.chartLineGain : AppColors.chartLineLoss;
+    final color = isGain ? AppColors.chartLineGain : AppColors.chartLineLoss;
     final gradient = isGain ? _kGainGradient : _kLossGradient;
 
     final spots = List<FlSpot>.generate(
@@ -57,21 +60,31 @@ class SparklineChart extends StatelessWidget {
         width: width,
         child: LineChart(
           LineChartData(
-            gridData:      const FlGridData(show: false),
-            titlesData:    const FlTitlesData(show: false),
-            borderData:    FlBorderData(show: false),
-            lineTouchData: const LineTouchData(enabled: false),
-            clipData:      const FlClipData.all(),
+            gridData: const FlGridData(show: true),
+            titlesData: const FlTitlesData(
+              show: true,
+              // leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: true)),
+              rightTitles: AxisTitles(
+                sideTitles: SideTitles(showTitles: false),
+              ),
+              bottomTitles: AxisTitles(
+                sideTitles: SideTitles(showTitles: false),
+              ),
+              topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            ),
+            borderData: FlBorderData(show: true),
+            lineTouchData: const LineTouchData(enabled: true),
+            clipData: const FlClipData.all(),
             lineBarsData: [
               LineChartBarData(
-                spots:              spots,
-                isCurved:           true,
-                curveSmoothness:    0.35,
-                color:              color,
-                barWidth:           2,
-                isStrokeCapRound:   true,
-                dotData:            const FlDotData(show: false),
-                belowBarData:       BarAreaData(show: true, gradient: gradient),
+                spots: spots,
+                isCurved: true,
+                curveSmoothness: 0.35,
+                color: color,
+                barWidth: 2,
+                isStrokeCapRound: true,
+                dotData: const FlDotData(show: false),
+                belowBarData: BarAreaData(show: true, gradient: gradient),
               ),
             ],
           ),
@@ -80,6 +93,31 @@ class SparklineChart extends StatelessWidget {
           duration: Duration.zero,
         ),
       ),
+    );
+  }
+}
+
+class SparklineDialogContent extends StatelessWidget {
+  final String assetId;
+  const SparklineDialogContent({super.key, required this.assetId});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<MarketBloc, MarketState>(
+      builder: (context, state) {
+        if (state is MarketLoaded) {
+          final asset = state.filteredAssets.firstWhere((a) => a.id == assetId);
+
+          return SparklineChart(
+            data: asset.sparklineData,
+            isGain: asset.isGain,
+            height: MediaQuery.sizeOf(context).height * 0.4,
+            width: MediaQuery.sizeOf(context).width * 0.8,
+          );
+        }
+
+        return const SizedBox();
+      },
     );
   }
 }
